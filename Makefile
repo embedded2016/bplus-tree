@@ -1,4 +1,3 @@
-#
 # Configurable options
 #   MODE = release | debug (default: debug)
 #   SNAPPY = 0 | 1 (default: 1)
@@ -8,10 +7,6 @@ CPPFLAGS += -fPIC -Iinclude -Iexternal/snappy
 CPPFLAGS += -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
 CPPFLAGS += -D_XOPEN_SOURCE=500 -D_DARWIN_C_SOURCE
 LINKFLAGS += -lpthread
-
-ifeq ($(ARCH),i386)
-	CPPFLAGS += -arch i386
-endif
 
 ifeq ($(MODE),release)
 	CPPFLAGS += -O3
