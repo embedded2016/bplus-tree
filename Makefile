@@ -80,6 +80,6 @@ clean:
 	@rm -f bplus.a
 	@rm -f $(OBJS) $(TESTS) $(deps)
 
-.PHONY: all test clean
+.PHONY: all check clean
 
 -include $(deps)
