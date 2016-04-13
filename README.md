@@ -1,5 +1,8 @@
 # B+ tree implementation in C
 
+## Depedency
+The implementation depends on Google's [snappy](https://github.com/google/snappy) library for fast compression.
+
 ## Build
 ```bash
 make MODE=release
