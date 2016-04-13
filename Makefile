@@ -47,7 +47,7 @@ OBJS += src/bplus.o
 deps := $(OBJS:%.o=%.o.d)
 
 bplus.a: $(OBJS)
-	$(AR) rcs bplus.a $<
+	$(AR) rcs bplus.a $(OBJS)
 
 src/%.o: src/%.c
 	$(CC) $(CFLAGS) $(CSTDFLAG) $(CPPFLAGS) $(DEFINES) \
