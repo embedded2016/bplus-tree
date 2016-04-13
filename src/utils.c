@@ -23,33 +23,29 @@ uint64_t bp__compute_hashl(uint64_t key)
     uint32_t keyl = key & 0xffffffffLL;
 
     return ((uint64_t) bp__compute_hash(keyh) << 32) |
-           bp__compute_hash(keyl);
+                       bp__compute_hash(keyl);
 }
 
 uint64_t htonll(uint64_t value)
 {
     static const int num = 23;
 
-    if (*(const char *) (&num) == num) {
-        uint32_t high_part = htonl((uint32_t) (value >> 32));
-        uint32_t low_part = htonl((uint32_t) (value & 0xffffffffLL));
+    if (*(const char *) (&num) != num) return value;
 
-        return ((uint64_t) low_part << 32) | high_part;
-    } else {
-        return value;
-    }
+    uint32_t high_part = htonl((uint32_t) (value >> 32));
+    uint32_t low_part = htonl((uint32_t) (value & 0xffffffffLL));
+
+    return ((uint64_t) low_part << 32) | high_part;
 }
 
 uint64_t ntohll(uint64_t value)
 {
     static const int num = 23;
 
-    if (*(const char *) (&num) == num) {
-        uint32_t high_part = ntohl((uint32_t) (value >> 32));
-        uint32_t low_part = ntohl((uint32_t) (value & 0xffffffffLL));
+    if (*(const char *) (&num) != num) return value;
 
-        return ((uint64_t) low_part << 32) | high_part;
-    } else {
-        return value;
-    }
+    uint32_t high_part = ntohl((uint32_t) (value >> 32));
+    uint32_t low_part = ntohl((uint32_t) (value & 0xffffffffLL));
+
+    return ((uint64_t) low_part << 32) | high_part;
 }

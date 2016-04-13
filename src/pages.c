@@ -47,8 +47,7 @@ int bp__page_create(bp_db_t *t,
 void bp__page_destroy(bp_db_t *t, bp__page_t *page)
 {
     /* Free all keys */
-    uint64_t i = 0;
-    for (i = 0; i < page->length; i++) {
+    for (uint64_t i = 0; i < page->length; i++) {
         if (page->keys[i].allocated) {
             free(page->keys[i].value);
             page->keys[i].value = NULL;
@@ -67,14 +66,13 @@ void bp__page_destroy(bp_db_t *t, bp__page_t *page)
 int bp__page_clone(bp_db_t *t, bp__page_t *page, bp__page_t **clone)
 {
     int ret = BP_OK;
-    uint64_t i = 0;
     ret = bp__page_create(t, page->type, page->offset, page->config, clone);
     if (ret != BP_OK) return ret;
 
     (*clone)->is_head = page->is_head;
 
     (*clone)->length = 0;
-    for (i = 0; i < page->length; i++) {
+    for (uint64_t i = 0; i < page->length; i++) {
         ret = bp__kv_copy(&page->keys[i], &(*clone)->keys[i], 1);
         (*clone)->length++;
         if (ret != BP_OK) break;
@@ -343,7 +341,7 @@ int bp__page_get_range(bp_db_t *t,
                        const bp_key_t *end,
                        bp_filter_cb filter,
                        bp_range_cb cb,
-                       void* arg)
+                       void *arg)
 {
     int ret;
     uint64_t i;
@@ -617,8 +615,7 @@ int bp__page_remove(bp_db_t *t,
 int bp__page_copy(bp_db_t *source, bp_db_t *target, bp__page_t *page)
 {
     int ret;
-    uint64_t i;
-    for (i = 0; i < page->length; i++) {
+    for (uint64_t i = 0; i < page->length; i++) {
         if (page->type == kPage) {
             /* copy child page */
             bp__page_t *child;
@@ -766,10 +763,8 @@ int bp__page_split_head(bp_db_t *t, bp__page_t **page)
 
 void bp__page_shiftr(bp_db_t *t, bp__page_t *p, const uint64_t index)
 {
-    uint64_t i;
-
     if (p->length != 0) {
-        for (i = p->length - 1; i >= index; i--) {
+        for (uint64_t i = p->length - 1; i >= index; i--) {
             bp__kv_copy(&p->keys[i], &p->keys[i + 1], 0);
 
             if (i == 0) break;
@@ -779,8 +774,7 @@ void bp__page_shiftr(bp_db_t *t, bp__page_t *p, const uint64_t index)
 
 void bp__page_shiftl(bp_db_t *t, bp__page_t *p, const uint64_t index)
 {
-    uint64_t i;
-    for (i = index + 1; i < p->length; i++) {
+    for (uint64_t i = index + 1; i < p->length; i++) {
         bp__kv_copy(&p->keys[i], &p->keys[i - 1], 0);
     }
 }

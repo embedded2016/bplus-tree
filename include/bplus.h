@@ -7,9 +7,9 @@ extern "C" {
 
 #define BP_PADDING 64
 
-#define BP_KEY_FIELDS \
-  uint64_t length;\
-  char *value;
+#define BP_KEY_FIELDS   \
+    uint64_t length;    \
+    char *value;
 
 #include <stdint.h> /* uintx_t */
 #include "private/errors.h"
@@ -35,14 +35,14 @@ typedef int (*bp_filter_cb)(void* arg, const bp_key_t *key);
 /*
  * Open and close database
  */
-int bp_open(bp_db_t* tree, const char* filename);
-int bp_close(bp_db_t* tree);
+int bp_open(bp_db_t *tree, const char *filename);
+int bp_close(bp_db_t *tree);
 
 /*
  * Get one value by key
  */
-int bp_get(bp_db_t* tree, const bp_key_t* key, bp_value_t* value);
-int bp_gets(bp_db_t* tree, const char* key, char** value);
+int bp_get(bp_db_t *tree, const bp_key_t *key, bp_value_t *value);
+int bp_gets(bp_db_t *tree, const char *key, char **value);
 
 /*
  * Get previous value

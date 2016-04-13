@@ -192,7 +192,7 @@ int bp_compact(bp_db_t *tree)
     bp_db_t compacted;
 
     /* get name of compacted database (prefixed with .compact) */
-    ret = bp__writer_compact_name((bp__writer_t*) tree, &compacted_name);
+    ret = bp__writer_compact_name((bp__writer_t *) tree, &compacted_name);
     if (ret != BP_OK) return ret;
 
     /* open it */
@@ -488,12 +488,11 @@ int bp__tree_write_head(bp__writer_t *w, void *data)
 
 int bp__default_compare_cb(const bp_key_t *a, const bp_key_t *b)
 {
-    uint32_t i, len = a->length < b->length ? a->length : b->length;
+    uint32_t len = a->length < b->length ? a->length : b->length;
 
-    for (i = 0; i < len; i++) {
-        if (a->value[i] != b->value[i]) {
+    for (uint32_t i = 0; i < len; i++) {
+        if (a->value[i] != b->value[i])
             return (uint8_t) a->value[i] > (uint8_t) b->value[i] ? 1 : -1;
-        }
     }
 
     return a->length - b->length;

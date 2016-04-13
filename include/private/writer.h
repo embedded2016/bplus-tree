@@ -7,10 +7,10 @@
 extern "C" {
 #endif
 
-#define BP_WRITER_PRIVATE \
-    int fd;\
-    char* filename;\
-    uint64_t filesize;\
+#define BP_WRITER_PRIVATE	\
+    int fd;                     \
+    char *filename;             \
+    uint64_t filesize;          \
     char padding[BP_PADDING];
 
 typedef struct bp__writer_s bp__writer_t;

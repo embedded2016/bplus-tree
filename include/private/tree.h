@@ -14,7 +14,7 @@ extern "C" {
 
 #define BP_TREE_PRIVATE         \
     BP_WRITER_PRIVATE           \
-    pthread_rwlock_t rwlock;        \
+    pthread_rwlock_t rwlock;    \
     bp__tree_head_t head;       \
     bp_compare_cb compare_cb;
 

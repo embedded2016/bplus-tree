@@ -251,9 +251,8 @@ int bp__writer_find(bp__writer_t*w,
     }
 
     /* Not found - invoke miss */
-    if (!match) {
+    if (!match)
         ret = miss(w, data);
-    }
 
     return ret;
 }
