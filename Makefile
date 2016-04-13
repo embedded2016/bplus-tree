@@ -65,7 +65,7 @@ TESTS += test/bench-basic
 TESTS += test/bench-bulk
 TESTS += test/bench-multithread-get
 
-test: $(TESTS)
+check: $(TESTS)
 	@test/test-api
 	@test/test-reopen
 	@test/test-range

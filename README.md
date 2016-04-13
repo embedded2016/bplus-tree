@@ -9,7 +9,7 @@ make MODE=release
 ```
 optionally, you can execute test suite:
 ```bash
-make test
+make check
 ```
 
 ## Usage
