@@ -1,7 +1,7 @@
 #ifndef _PRIVATE_ERRORS_H_
 #define _PRIVATE_ERRORS_H_
 
-#define BP_OK 0
+#define BP_OK              0
 
 #define BP_EFILE           0x101
 #define BP_EFILEREAD_OOB   0x102

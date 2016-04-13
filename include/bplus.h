@@ -161,7 +161,7 @@ int bp_compact(bp_db_t *tree);
 /*
  * Set compare function to define order of keys in database
  */
-void bp_set_compare_cb(bp_db_t* tree, bp_compare_cb cb);
+void bp_set_compare_cb(bp_db_t *tree, bp_compare_cb cb);
 
 /*
  * Ensure that all data is written to disk
