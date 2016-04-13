@@ -2,7 +2,7 @@
 #   MODE = release | debug (default: debug)
 #   SNAPPY = 0 | 1 (default: 1)
 #
-CSTDFLAG = --std=c89 -pedantic -Wall -Wextra -Wno-unused-parameter
+CSTDFLAG = --std=c99 -pedantic -Wall -Wextra -Wno-unused-parameter
 CPPFLAGS += -fPIC -Iinclude -Iexternal/snappy
 CPPFLAGS += -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
 CPPFLAGS += -D_XOPEN_SOURCE=500 -D_DARWIN_C_SOURCE
