@@ -6,7 +6,7 @@ CSTDFLAG = --std=c99 -pedantic -Wall -Wextra -Wno-unused-parameter
 CPPFLAGS += -fPIC -Iinclude -Iexternal/snappy
 CPPFLAGS += -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
 CPPFLAGS += -D_XOPEN_SOURCE=500 -D_DARWIN_C_SOURCE
-LINKFLAGS += -lpthread
+LDFLAGS += -lpthread
 
 ifeq ($(MODE),release)
 	CPPFLAGS += -O3
@@ -56,7 +56,7 @@ DEPS += include/private/compressor.h
 DEPS += include/private/writer.h
 
 bplus.a: $(OBJS)
-	$(AR) rcs bplus.a $(OBJS)
+	$(AR) rcs bplus.a $<
 
 src/%.o: src/%.c $(DEPS)
 	$(CC) $(CFLAGS) $(CSTDFLAG) $(CPPFLAGS) $(DEFINES) -c $< -o $@
@@ -84,7 +84,7 @@ test: $(TESTS)
 	@test/test-threaded-rw
 
 test/%: test/%.cc bplus.a
-	$(CXX) $(CFLAGS) $(CPPFLAGS) $< -o $@ bplus.a $(LINKFLAGS)
+	$(CXX) $(CFLAGS) $(CPPFLAGS) $< -o $@ bplus.a $(LDFLAGS)
 
 clean:
 	@rm -f bplus.a
