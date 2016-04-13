@@ -44,22 +44,14 @@ OBJS += src/values.o
 OBJS += src/pages.o
 OBJS += src/bplus.o
 
-DEPS=
-DEPS += include/bplus.h
-DEPS += include/private/errors.h
-DEPS += include/private/threads.h
-DEPS += include/private/pages.h
-DEPS += include/private/values.h
-DEPS += include/private/tree.h
-DEPS += include/private/utils.h
-DEPS += include/private/compressor.h
-DEPS += include/private/writer.h
+deps := $(OBJS:%.o=%.o.d)
 
 bplus.a: $(OBJS)
 	$(AR) rcs bplus.a $<
 
-src/%.o: src/%.c $(DEPS)
-	$(CC) $(CFLAGS) $(CSTDFLAG) $(CPPFLAGS) $(DEFINES) -c $< -o $@
+src/%.o: src/%.c
+	$(CC) $(CFLAGS) $(CSTDFLAG) $(CPPFLAGS) $(DEFINES) \
+		-o $@ -MMD -MF $@.d -c $<
 
 external/snappy/%.o: external/snappy/%.cc
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
@@ -88,6 +80,8 @@ test/%: test/%.cc bplus.a
 
 clean:
 	@rm -f bplus.a
-	@rm -f $(OBJS) $(TESTS)
+	@rm -f $(OBJS) $(TESTS) $(deps)
 
 .PHONY: all test clean
+
+-include $(deps)
