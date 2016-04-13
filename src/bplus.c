@@ -8,7 +8,7 @@ int bp_open(bp_db_t *tree, const char* filename)
 {
     int ret;
 
-    ret = bp__rwlock_init(&tree->rwlock);
+    ret = pthread_rwlock_init(&tree->rwlock, NULL) ? BP_ERWLOCK : BP_OK;
     if (ret != BP_OK) return ret;
 
     ret = bp__writer_create((bp__writer_t*) tree, filename);
@@ -22,17 +22,17 @@ int bp_open(bp_db_t *tree, const char* filename)
     return BP_OK;
 
 fatal:
-    bp__rwlock_destroy(&tree->rwlock);
+    pthread_rwlock_destroy(&tree->rwlock);
     return ret;
 }
 
 int bp_close(bp_db_t *tree)
 {
-    bp__rwlock_wrlock(&tree->rwlock);
+    pthread_rwlock_wrlock(&tree->rwlock);
     bp__destroy(tree);
-    bp__rwlock_unlock(&tree->rwlock);
+    pthread_rwlock_unlock(&tree->rwlock);
 
-    bp__rwlock_destroy(&tree->rwlock);
+    pthread_rwlock_destroy(&tree->rwlock);
     return BP_OK;
 }
 
@@ -71,11 +71,11 @@ int bp_get(bp_db_t *tree, const bp_key_t* key, bp_value_t *value)
 {
     int ret;
 
-    bp__rwlock_rdlock(&tree->rwlock);
+    pthread_rwlock_rdlock(&tree->rwlock);
 
     ret = bp__page_get(tree, tree->head.page, key, value);
 
-    bp__rwlock_unlock(&tree->rwlock);
+    pthread_rwlock_unlock(&tree->rwlock);
 
     return ret;
 }
@@ -102,14 +102,14 @@ int bp_update(bp_db_t *tree,
 {
     int ret;
 
-    bp__rwlock_wrlock(&tree->rwlock);
+    pthread_rwlock_wrlock(&tree->rwlock);
 
     ret = bp__page_insert(tree, tree->head.page, key, value, update_cb, arg);
     if (ret == BP_OK) {
         ret = bp__tree_write_head((bp__writer_t*) tree, NULL);
     }
 
-    bp__rwlock_unlock(&tree->rwlock);
+    pthread_rwlock_unlock(&tree->rwlock);
 
     return ret;
 }
@@ -126,7 +126,7 @@ int bp_bulk_update(bp_db_t *tree,
     bp_value_t* values_iter = (bp_value_t *) *values;
     uint64_t left = count;
 
-    bp__rwlock_wrlock(&tree->rwlock);
+    pthread_rwlock_wrlock(&tree->rwlock);
 
     ret = bp__page_bulk_insert(tree,
                                tree->head.page,
@@ -140,7 +140,7 @@ int bp_bulk_update(bp_db_t *tree,
         ret =  bp__tree_write_head((bp__writer_t *) tree, NULL);
     }
 
-    bp__rwlock_unlock(&tree->rwlock);
+    pthread_rwlock_unlock(&tree->rwlock);
 
     return ret;
 }
@@ -168,14 +168,14 @@ int bp_removev(bp_db_t *tree,
 {
     int ret;
 
-    bp__rwlock_wrlock(&tree->rwlock);
+    pthread_rwlock_wrlock(&tree->rwlock);
 
     ret = bp__page_remove(tree, tree->head.page, key, remove_cb, arg);
     if (ret == BP_OK) {
         ret = bp__tree_write_head((bp__writer_t *) tree, NULL);
     }
 
-    bp__rwlock_unlock(&tree->rwlock);
+    pthread_rwlock_unlock(&tree->rwlock);
 
     return ret;
 }
@@ -203,12 +203,12 @@ int bp_compact(bp_db_t *tree)
     /* destroy stub head page */
     bp__page_destroy(&compacted, compacted.head.page);
 
-    bp__rwlock_rdlock(&tree->rwlock);
+    pthread_rwlock_rdlock(&tree->rwlock);
 
     /* clone source tree's head page */
     ret = bp__page_clone(&compacted, tree->head.page, &compacted.head.page);
 
-    bp__rwlock_unlock(&tree->rwlock);
+    pthread_rwlock_unlock(&tree->rwlock);
 
     /* copy all pages starting from head */
     ret = bp__page_copy(tree, &compacted, compacted.head.page);
@@ -217,11 +217,11 @@ int bp_compact(bp_db_t *tree)
     ret = bp__tree_write_head((bp__writer_t *) &compacted, NULL);
     if (ret != BP_OK) return ret;
 
-    bp__rwlock_wrlock(&tree->rwlock);
+    pthread_rwlock_wrlock(&tree->rwlock);
 
     ret = bp__writer_compact_finalize((bp__writer_t *) tree,
                                       (bp__writer_t *) &compacted);
-    bp__rwlock_unlock(&tree->rwlock);
+    pthread_rwlock_unlock(&tree->rwlock);
 
     return ret;
 }
@@ -235,7 +235,7 @@ int bp_get_filtered_range(bp_db_t *tree,
 {
     int ret;
 
-    bp__rwlock_rdlock(&tree->rwlock);
+    pthread_rwlock_rdlock(&tree->rwlock);
 
     ret = bp__page_get_range(tree,
                              tree->head.page,
@@ -245,7 +245,7 @@ int bp_get_filtered_range(bp_db_t *tree,
                              cb,
                              arg);
 
-    bp__rwlock_unlock(&tree->rwlock);
+    pthread_rwlock_unlock(&tree->rwlock);
 
     return ret;
 }
@@ -411,9 +411,9 @@ int bp_fsync(bp_db_t *tree)
 {
     int ret;
 
-    bp__rwlock_wrlock(&tree->rwlock);
+    pthread_rwlock_wrlock(&tree->rwlock);
     ret = bp__writer_fsync((bp__writer_t *) tree);
-    bp__rwlock_unlock(&tree->rwlock);
+    pthread_rwlock_unlock(&tree->rwlock);
 
     return ret;
 }

@@ -36,7 +36,6 @@ ifneq ($(SNAPPY),0)
 	OBJS += external/snappy/snappy-c.o
 endif
 
-OBJS += src/threads.o
 OBJS += src/compressor.o
 OBJS += src/utils.o
 OBJS += src/writer.o

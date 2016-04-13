@@ -1,7 +1,6 @@
 #include "bplus.h"
 #include "private/writer.h"
 #include "private/compressor.h"
-#include "private/threads.h"
 
 #include <fcntl.h> /* open */
 #include <unistd.h> /* close, write, read */

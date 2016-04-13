@@ -5,15 +5,16 @@
 extern "C" {
 #endif
 
-#include "private/threads.h"
 #include "private/writer.h"
 #include "private/pages.h"
+
+#include <pthread.h>
 
 #define BP__HEAD_SIZE  sizeof(uint64_t) * 4
 
 #define BP_TREE_PRIVATE         \
     BP_WRITER_PRIVATE           \
-    bp__rwlock_t rwlock;        \
+    pthread_rwlock_t rwlock;        \
     bp__tree_head_t head;       \
     bp_compare_cb compare_cb;
 
