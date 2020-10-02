@@ -3,7 +3,7 @@ A B-tree is a self-balancing tree data structure that maintains sorted data and 
 
 For more info [Click](https://en.wikipedia.org/wiki/B-tree#:~:text=In%20computer%20science%2C%20a%20B,with%20more%20than%20two%20children) .
 
-# B+ tree implementation in C
+# Implementation of B+ tree using C
 
 ## Depedency
 The implementation depends on Google's [snappy](https://github.com/google/snappy) library for fast compression.
